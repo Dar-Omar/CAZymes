@@ -2,7 +2,7 @@
 
 ## Requirements
 
-- [dbCAN3](https://bcb.unl.edu/dbCAN2/)
+- [dbCAN3](https://dbcan.readthedocs.io/en/latest/installation.html)
 
 ## Preparation
 
