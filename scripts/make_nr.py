@@ -7,9 +7,9 @@ Outputs:
 """
 import hashlib
 
-infile = "../CAZyDB.fa"
-nr_path = "../cazy_nr.fa"
-map_path = "../cazy_md5_map.tsv"
+infile = "CAZyDB.fa"
+nr_path = "cazy_nr.fa"
+map_path = "cazy_md5_map.tsv"
 
 seen = set()
 
