@@ -20,3 +20,5 @@ This produces `CAZyDB.fa`, a FASTA file containing all CAZy reference sequences 
 ```bash
 python3 scripts/make_nr.py
 ```
+
+These non-redundant sequences were searched against [Pfam-A 38.1](https://ftp.ebi.ac.uk/pub/databases/Pfam/releases/Pfam38.1/) using `hmmsearch` from [HMMER v3.4](http://hmmer.org/).
