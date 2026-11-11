@@ -3,6 +3,9 @@
 ## Requirements
 
 - [dbCAN3](https://dbcan.readthedocs.io/en/latest/installation.html)
+- [HMMER 3.4](http://hmmer.org/) (`hmmsearch`)
+- [Pfam-A.hmm 38.1](https://ftp.ebi.ac.uk/pub/databases/Pfam/releases/Pfam38.1/)
+- [SeqKit](https://bioinf.shenwei.me/seqkit/)
 
 ## Preparation
 
