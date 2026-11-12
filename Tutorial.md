@@ -27,3 +27,21 @@ These non-redundant sequences were searched against [Pfam-A.hmm 38.1](https://ft
 ```bash
 sbatch scripts/cazy_pfam.sh
 ```
+
+### Select CAZyme-associated Pfam families
+
+Count how many non-redundant CAZy sequences contain each Pfam family, then keep families found in at least 100 sequences.
+
+```bash
+grep -v '^#' pfam.domtbl \
+  | awk -v OFS='\t' '{split($5,a,"."); print a[1], $4, $1}' \
+  | sort -u \
+  | cut -f1,2 | sort | uniq -c | sort -rn \
+  | awk -v OFS='\t' '{print $2, $3, $1}' > cazyme_pfam_counts.tsv
+  
+awk -F'\t' '$3 >= 100 {print $1}' cazyme_pfam_counts.tsv > cazyme_pfam_min100.txt
+```
+
+
+
+
