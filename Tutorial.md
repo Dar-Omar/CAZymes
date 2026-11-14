@@ -44,6 +44,23 @@ grep -v '^#' pfam.domtbl \
 awk -F'\t' '$3 >= 100 {print $1}' cazyme_pfam_counts.tsv > cazyme_pfam_min100.txt
 ```
 
+### Retrieve candidate protein IDs from MGnify
+
+Find MGnify proteins with at least hit for the selected Pfam families, using MGnify's precomputed Pfam annotations.
+
+`mgy_proteins_pfam.parquet` from [MGnify Proteins 2026_07](https://ftp.ebi.ac.uk/pub/databases/metagenomics/peptide_database/2026_07/), should be placed in the working directory.
+
+```bash
+srun --partition=cpu --cpus-per-task=32 --mem=180G --time=00:30:00 \
+    python3 scripts/make_hits_and_ids.py
+```
+
+Outputs:
+- `cazy1071_ids.txt`: sorted, unique MGnify protein IDs, the input for sequence extraction. 668,145,215 protein identifier. 
+
+- `cache/hits_cazy<hash>_n1071.parquet`: protein–family pairs, all 1,071 families have hits.
+
+Users are advised to adjust the `srun` options to their clusters.
 
 
 
