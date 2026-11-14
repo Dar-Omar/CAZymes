@@ -2,14 +2,16 @@
 """
 make_hits_and_ids.py
 
-From a list of Pfam families, find every MGnify protein with a hit to any of
-them and write:
-
-  1. parquet file
+From the list of Pfam families, find every MGnify protein with a hit to any of them.
+This writes:
+  1. cache/hits_cazy<hash>_n<N>.parquet
        one row per distinct (protein_id, pfam_accession); reused if it already
        exists (--rebuild forces a new scan)
-  2. ids
-       each distinct protein_id once, sorted, as input for extract_shards_gz.sh
+  2. <ids>  (.npy)
+       each distinct protein_id once, sorted, as a NumPy int64 array:
+       the input for extract_shards_gz.sh
+
+The families file needs a Pfam accession in column 1.
 """
 
 import argparse
@@ -22,6 +24,7 @@ import tempfile
 import time
 
 import duckdb
+import numpy as np
 
 
 def log(msg):
@@ -43,13 +46,13 @@ def load_families(path):
 
 
 def main():
-    slurm_mem = os.environ.get("SLURM_MEM_PER_NODE")
+    slurm_mem = os.environ.get("SLURM_MEM_PER_NODE")  # MB, set by --mem
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--families-file", default="cazyme_pfam_min100.txt")
     ap.add_argument("--pfam-parquet", default="mgy_proteins_pfam.parquet")
     ap.add_argument("--cache-dir", default="cache")
-    ap.add_argument("--ids", default="cazy1071_ids.txt")
+    ap.add_argument("--ids", default="cazy1071_ids.npy")
     ap.add_argument("--rebuild", action="store_true",
                     help="redo the scan even if the hits file exists")
     ap.add_argument("--threads", type=int,
@@ -88,7 +91,7 @@ def main():
     else:
         if not os.path.exists(args.pfam_parquet):
             sys.exit(f"missing input: {args.pfam_parquet}")
-        log(f"scanning {args.pfam_parquet} (slow) ...")
+        log(f"scanning {args.pfam_parquet}")
         t0 = time.time()
         fam_list = ",".join(map(str, families))
         tmp = hits_path + ".tmp"
@@ -115,14 +118,16 @@ def main():
         print(f"families with no hits   : {', '.join(absent[:20])}"
               f"{' ...' if len(absent) > 20 else ''}")
 
-    # distinct protein IDs, sorted
+    # distinct protein IDs, sorted, as a NumPy array for extract_shards_gz.sh
+    ids = np.asarray(con.execute(f"""
+        SELECT DISTINCT protein_id FROM read_parquet('{hits_path}') ORDER BY protein_id
+    """).fetchnumpy()["protein_id"], dtype=np.int64)
+    assert (ids[1:] > ids[:-1]).all(), "IDs must be sorted and unique"
     tmp_ids = args.ids + ".tmp"
-    con.execute(f"""
-        COPY (SELECT DISTINCT protein_id FROM read_parquet('{hits_path}') ORDER BY protein_id)
-        TO '{tmp_ids}' (FORMAT csv, HEADER false)
-    """)
+    with open(tmp_ids, "wb") as fh:
+        np.save(fh, ids)
     os.replace(tmp_ids, args.ids)
-    print(f"wrote {args.ids}: {distinct:,} IDs, {os.path.getsize(args.ids) / 1e9:.2f} GB")
+    print(f"wrote {args.ids}: {len(ids):,} IDs, {ids.nbytes / 1e9:.2f} GB")
     con.close()
     return 0
 
