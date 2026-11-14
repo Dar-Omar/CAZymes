@@ -56,8 +56,7 @@ srun --partition=cpu --cpus-per-task=32 --mem=180G --time=00:30:00 \
 ```
 
 Outputs:
-- `cazy1071_ids.txt`: sorted, unique MGnify protein IDs, the input for sequence extraction. 668,145,215 protein identifier. 
-
+- `cazy1071_ids.npy`: sorted, unique MGnify protein IDs as a NumPy int64 array. 668,145,215 protein identifier the input for sequence extraction.
 - `cache/hits_cazy<hash>_n1071.parquet`: protein–family pairs, all 1,071 families have hits.
 
 Users are advised to adjust the `srun` options to their clusters.
