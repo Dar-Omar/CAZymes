@@ -7,7 +7,7 @@ This writes:
   1. cache/hits_cazy<hash>_n<N>.parquet
        one row per distinct (protein_id, pfam_accession); reused if it already
        exists (--rebuild forces a new scan)
-  2. <ids>  (.npy)
+  2. cazyN_ids.npy
        each distinct protein_id once, sorted, as a NumPy int64 array:
        the input for extract_shards_gz.sh
 
