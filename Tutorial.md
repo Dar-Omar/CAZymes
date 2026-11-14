@@ -6,6 +6,8 @@
 - [HMMER 3.4](http://hmmer.org/) (`hmmsearch`)
 - [Pfam-A.hmm 38.1](https://ftp.ebi.ac.uk/pub/databases/Pfam/releases/Pfam38.1/)
 - [SeqKit](https://bioinf.shenwei.me/seqkit/)
+- [DuckDB](https://duckdb.org) 1.5.5 (Python package)
+
 
 ## Preparation
 
