@@ -51,7 +51,7 @@ Find MGnify proteins with at least hit for the selected Pfam families, using MGn
 `mgy_proteins_pfam.parquet` from [MGnify Proteins 2026_07](https://ftp.ebi.ac.uk/pub/databases/metagenomics/peptide_database/2026_07/), should be placed in the working directory.
 
 ```bash
-srun --partition=cpu --cpus-per-task=32 --mem=180G --time=00:30:00 \
+srun --partition=cpu --cpus-per-task=16 --mem=100G --time=00:10:00 \
     python3 scripts/make_hits_and_ids.py
 ```
 
