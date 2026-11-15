@@ -61,5 +61,28 @@ Outputs:
 
 Users are advised to adjust the `srun` options to their clusters.
 
+### Extract full-length candidate sequences
 
+[`extract_shards_gz.sh`](scripts/extract_shards_gz.sh) downloads the 48 MGnify Proteins FASTA shards (~14 GB each) one at a time and keeps full-length sequences (`FL=1`) whose IDs are in `cazy1071_ids.npy`. [`prefetch_shards.sh`](scripts/prefetch_shards.sh) downloads next shards in parallel so the extractor. Each shard is deleted after extracting to save disk space.
+
+Run each in its own screen session:
+
+```bash
+scripts/extract_shards_gz.sh        # session 1
+scripts/prefetch_shards.sh          # session 2
+```
+
+Outputs:
+- `cazy1071_fl.faa.gz`: full-length candidate sequences
+- `cazy1071_fl.faa.gz.done` and `.counts`: finished shards and sequences kept per shard
+
+Both scripts are resumable: rerun the same command after an interruption. The run is complete when the extractor exits with status 0 and `.done` lists all 48 shards. To check use the following two commands which shall return 48:
+
+```bash
+grep -c . cazy1071_fl.faa.gz.done
+
+cut -f1 cazy1071_fl.faa.gz.counts | sort -u | wc -l
+```
+
+149,792,781 sequences to be retained after this step .
 
