@@ -1,5 +1,4 @@
 #!/bin/bash
-
 # Download MGnify Proteins shards in parallel ahead of extract_shards_gz.sh,
 # so the extractor rarely has to wait for a download.
 # N parallel downloads are about N times faster than one.
