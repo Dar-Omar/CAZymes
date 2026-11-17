@@ -86,3 +86,31 @@ cut -f1 cazy1071_fl.faa.gz.counts | sort -u | wc -l
 
 149,792,781 sequences to be retained after this step .
 
+
+### Annotate candidates with dbCAN
+
+Split the full-length candidates into chunks of 500,000 sequences and annotate each chunk with run_dbcan as a SLURM job array.
+
+```bash
+seqkit split2 -s 500000 -O chunks_1071 cazy1071_fl.faa.gz
+mkdir -p logs
+sbatch scripts/dbcan_1071.sh
+```
+
+The array size in the script must equal the number of chunks (`ls chunks_1071/*.faa.gz | wc -l`), or override it with `sbatch --array=1-<n_chunks>%20 scripts/dbcan_1071.sh`. The dbCAN database directory defaults to `$HOME/dbcan_db` (users can change it to what suits their systems). Resubmitting reruns only unfinished chunks.
+
+Merge the per-chunk results with:
+
+```bash
+awk 'FNR == 1 && NR != 1 {next} 1' dbcan_1071/chunk_*/overview.tsv > dbcan_1071/overview.tsv.tmp \
+  && mv dbcan_1071/overview.tsv.tmp dbcan_1071/overview.tsv
+```
+Then keep proteins supported by at least two of dbCAN's three methods:
+
+```bash
+awk -F'\t' 'NR==1 {for (i=1; i<=NF; i++) if ($i == "#ofTools") c=i; print; next} $c >= 2' overview.tsv > overview_2.tsv
+```
+
+- `overview.tsv`: proteins annotated by at least one method (expected 30,757,223)
+- `overview_2.tsv`: CAZymes supported by at least two methods (expected 24,848,976)
+
