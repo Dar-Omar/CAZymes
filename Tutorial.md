@@ -111,7 +111,14 @@ Then keep proteins supported by at least two of dbCAN's three methods:
 ```bash
 awk -F'\t' 'NR==1 {for (i=1; i<=NF; i++) if ($i == "#ofTools") c=i; print; next} $c >= 2' overview.tsv > overview_2.tsv
 ```
+Keep CAZymes with predicted substrates:
+
+```bash
+awk -F'\t' 'NR==1 {for (i=1; i<=NF; i++) if ($i == "Substrate") c=i; print; next} $c ~ /[^-;|, ]/' \
+    overview_2.tsv > overview_2_substrates.tsv
+```
 
 - `overview.tsv`: proteins annotated by at least one method (expected 30,757,223)
 - `overview_2.tsv`: CAZymes supported by at least two methods (expected 24,848,976)
+- `overview_2_substrates.tsv`: CAZymes with known predicted substrates (expected 9,762,736)
 
