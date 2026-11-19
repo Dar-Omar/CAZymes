@@ -122,3 +122,10 @@ awk -F'\t' 'NR==1 {for (i=1; i<=NF; i++) if ($i == "Substrate") c=i; print; next
 - `overview_2.tsv`: CAZymes supported by at least two methods (expected 24,848,976)
 - `overview_2_substrates.tsv`: CAZymes with known predicted substrates (expected 9,762,736)
 
+```bash
+awk -F'\t' 'NR==1 {for (i=1; i<=NF; i++) if ($i == "Substrate") c=i; next}
+            {n = split($c, s, ";"); for (j=1; j<=n; j++) {gsub(/^ +| +$/, "", s[j]); if (s[j] != "" && s[j] != "-") u[s[j]]}}
+            END {print length(u)}' overview_2_substrates.tsv
+```
+The previous command counts unique substrates (expected 46)
+
