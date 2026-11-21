@@ -129,3 +129,18 @@ awk -F'\t' 'NR==1 {for (i=1; i<=NF; i++) if ($i == "Substrate") c=i; next}
 ```
 The previous command counts unique substrates (expected 46)
 
+### Count CAZymes per substrate and group
+
+Count, for each predicted substrate, the CAZymes whose `Substrate` field lists it, and add group the substrates. A CAZyme with several substrates (separated by ;) counts once under each.
+
+```bash
+scripts/substrate_counts.sh
+```
+
+- Output: `dbcan_1071/substrates.tsv` with columns `Count`, `Substrate`, `Group`, sorted by count
+
+The substrate-to-group mapping (46 substrates, 16 groups plus `Other`) is defined in the script, you can edit it there to change the grouping. Substrates missing from the mapping are labelled `UNMAPPED` and reported. 
+
+Expected: 46 substrates, no `UNMAPPED` rows.
+
+
