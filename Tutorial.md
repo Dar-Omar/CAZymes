@@ -8,6 +8,9 @@
 - [SeqKit](https://bioinf.shenwei.me/seqkit/)
 - [DuckDB](https://duckdb.org) 1.5.5
 - [`mgy_proteins_pfam.parquet`](https://ftp.ebi.ac.uk/pub/databases/metagenomics/peptide_database/2026_07/mgy_proteins_pfam.parquet) Placed in the working directory
+- [pandas](https://pandas.pydata.org/pandas-docs/version/3.0/) 3.0.6
+- [matplotlib](https://matplotlib.org/stable/index.html) 3.11.2
+- [`mgy_biomes.parquet`](https://ftp.ebi.ac.uk/pub/databases/metagenomics/peptide_database/2026_07/)
 
 
 ## Preparation
