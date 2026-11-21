@@ -144,3 +144,24 @@ The substrate-to-group mapping (46 substrates, 16 groups plus `Other`) is define
 Expected: 46 substrates, no `UNMAPPED` rows.
 
 
+
+```bash
+awk -F'\t' -v OFS='\t' '
+    NR == FNR { if (FNR > 1) grp[$2] = $3; next }
+    FNR == 1  { for (i = 1; i <= NF; i++) if ($i == "Substrate") c = i
+                print $0, "Substrate_group"; next }
+    { delete seen; out = ""
+      n = split($c, s, ";")
+      for (j = 1; j <= n; j++) {
+          gsub(/^ +| +$/, "", s[j])
+          if (s[j] == "" || s[j] == "-") continue
+          g = (s[j] in grp) ? grp[s[j]] : "UNMAPPED"
+          if (g == "UNMAPPED") miss++
+          if (!(g in seen)) { seen[g]; out = (out == "" ? g : out ";" g) }
+      }
+      print $0, (out == "" ? "-" : out) }
+    END { if (miss) print "WARNING: " miss " substrate(s) without a group" > "/dev/stderr" }
+' dbcan_1071/substrates.tsv dbcan_1071/overview_2_substrates.tsv > dbcan_1071/overview_2_substrates_group.tsv.tmp \
+  && mv dbcan_1071/overview_2_substrates_group.tsv.tmp dbcan_1071/overview_2_substrates_group.tsv
+```
+The previous command is used to add the grouping column to dbCAN3 output
