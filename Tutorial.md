@@ -6,7 +6,7 @@
 - [HMMER 3.4](http://hmmer.org/) (`hmmsearch`)
 - [Pfam-A.hmm 38.1](https://ftp.ebi.ac.uk/pub/databases/Pfam/releases/Pfam38.1/)
 - [SeqKit](https://bioinf.shenwei.me/seqkit/)
-- [DuckDB](https://duckdb.org) 1.5.5 (Python package)
+- [DuckDB](https://duckdb.org) 1.5.5
 - [`mgy_proteins_pfam.parquet`](https://ftp.ebi.ac.uk/pub/databases/metagenomics/peptide_database/2026_07/mgy_proteins_pfam.parquet) Placed in the working directory
 
 
