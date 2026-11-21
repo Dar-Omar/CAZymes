@@ -165,3 +165,9 @@ awk -F'\t' -v OFS='\t' '
   && mv dbcan_1071/overview_2_substrates_group.tsv.tmp dbcan_1071/overview_2_substrates_group.tsv
 ```
 The previous command is used to add the grouping column to dbCAN3 output
+
+You can generate a bar plot to see the count of each group since `substrates.tsv` shows the count for individual substrates:
+
+```bash
+python3 plots/plot_groups_total.py
+```
