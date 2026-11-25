@@ -187,3 +187,46 @@ python3 add_biomes.py
 - Output: `dbcan_1071/overview_2_substrates_group_biomes.tsv`
 
 A warning is printed if any CAZyme has no biome (`-`), no warnings expected.
+
+Count CAZymes per MGnify biome and assign the biomes to one of 16 habitat categories (plus `Excluded` in this analysis). The biomes to categories mapping can be done using the script:
+
+```bash
+./biome_categories.sh
+```
+- Output: `dbcan_1071/unique_biomes_aggregated.tsv` with columns:
+  - `CAZymes`: CAZymes observed in that biome
+  - `Biome`: the biome
+  - `Category`: its assigned category
+  - `Category_CAZymes`: distinct CAZymes in the category (a CAZyme seen in several biomes of the same category counts once)
+
+Then add the category (or categories) of each CAZyme to the table, using the biomes to categories assignments from the output above with:
+
+```bash
+awk -F'\t' -v OFS='\t' '
+    NR == FNR { if (FNR > 1) cat[$2] = $3; next }
+    FNR == 1  { for (i = 1; i <= NF; i++) if ($i == "Biomes") b = i
+                if (!b) { print "no Biomes column" > "/dev/stderr"; exit 1 }
+                print $0, "Category"; next }
+    { if ($b == "" || $b == "-") { print $0, "-"; next }
+      delete seen; out = ""
+      n = split($b, e, "; ")
+      for (j = 1; j <= n; j++) {
+          lin = e[j]; sub(/ \([0-9]+\)$/, "", lin); gsub(/^[ \t]+|[ \t]+$/, "", lin)
+          if (lin == "") continue
+          c = (lin in cat) ? cat[lin] : "UNMAPPED"
+          if (c == "UNMAPPED") miss++
+          if (!(c in seen)) { seen[c]; out = (out == "" ? c : out ";" c) }
+      }
+      print $0, (out == "" ? "-" : out) }
+    END { if (miss) print "WARNING: " miss " lineage(s) without a category" > "/dev/stderr" }
+' dbcan_1071/unique_biomes_aggregated.tsv dbcan_1071/overview_2_substrates_group_biomes.tsv \
+  > dbcan_1071/overview_2_substrates_group_biomes_category.tsv.tmp \
+  && mv dbcan_1071/overview_2_substrates_group_biomes_category.tsv.tmp dbcan_1071/overview_2_substrates_group_biomes_category.tsv
+```
+
+
+
+
+  
+
+  
