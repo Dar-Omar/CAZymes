@@ -174,3 +174,16 @@ You can generate a bar plot to see the count of each group since `substrates.tsv
 ```bash
 python3 plots/plot_groups_total.py
 ```
+
+### Add MGnify biomes
+
+Add a `Biomes` column listing every MGnify biome each CAZyme was observed in, with the number of observations, most frequent first, e.g.
+`root:Host-associated:Human:Digestive system (12); root:Environmental:Aquatic:Marine (3)`.
+
+```bash
+python3 add_biomes.py
+```
+
+- Output: `dbcan_1071/overview_2_substrates_group_biomes.tsv`
+
+A warning is printed if any CAZyme has no biome (`-`), no warnings expected.
