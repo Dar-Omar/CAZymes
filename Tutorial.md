@@ -7,7 +7,7 @@
 - [Pfam-A.hmm 38.1](https://ftp.ebi.ac.uk/pub/databases/Pfam/releases/Pfam38.1/)
 - [SeqKit](https://bioinf.shenwei.me/seqkit/)
 - [DuckDB](https://duckdb.org) 1.5.5
-- [`mgy_proteins_pfam.parquet`](https://ftp.ebi.ac.uk/pub/databases/metagenomics/peptide_database/2026_07/mgy_proteins_pfam.parquet) Placed in the working directory
+- [`mgy_proteins_pfam.parquet`](https://ftp.ebi.ac.uk/pub/databases/metagenomics/peptide_database/2026_07/mgy_proteins_pfam.parquet)
 - [pandas](https://pandas.pydata.org/pandas-docs/version/3.0/) 3.0.6
 - [matplotlib](https://matplotlib.org/stable/index.html) 3.11.2
 - [`mgy_biomes.parquet`](https://ftp.ebi.ac.uk/pub/databases/metagenomics/peptide_database/2026_07/)
@@ -224,7 +224,8 @@ awk -F'\t' -v OFS='\t' '
   && mv dbcan_1071/overview_2_substrates_group_biomes_category.tsv.tmp dbcan_1071/overview_2_substrates_group_biomes_category.tsv
 ```
 
-
+Categories are listed in the order of the their biomes and separated by `;`.
+Expected: 9,557,523 of 9,762,736 CAZymes (97.9%) in at least one habitat category; 205,213 only in excluded lineages.
 
 
   
