@@ -227,6 +227,20 @@ awk -F'\t' -v OFS='\t' '
 Categories are listed in the order of the their biomes and separated by `;`.
 Expected: 9,557,523 of 9,762,736 CAZymes (97.9%) in at least one habitat category; 205,213 only in excluded lineages.
 
+### Extract characterised CAZymes
+
+Keep the CAZy entries annotated with an EC number, used as a proxy for experimentally characterised enzymes:
+
+```bash
+awk '/^>/{keep = ($0 ~ /\|[0-9]+\.[0-9]+\.[0-9]+\.([0-9]+|-)/)} keep' CAZyDB.fa > cazy_characterized.faa
+grep -c '^>' cazy_characterized.faa
+```
+
+- Output: `cazy_characterized.faa`
+
+Headers like `>CAC83725.1|GT2|2.4.1.16` are kept; complete and partial EC numbers (e.g. `3.2.1.-`) both count.
+
+Expected: 26,776 entries (16,166 unique sequences).
 
   
 
