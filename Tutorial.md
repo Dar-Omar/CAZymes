@@ -11,6 +11,7 @@
 - [pandas](https://pandas.pydata.org/pandas-docs/version/3.0/) 3.0.6
 - [matplotlib](https://matplotlib.org/stable/index.html) 3.11.2
 - [`mgy_biomes.parquet`](https://ftp.ebi.ac.uk/pub/databases/metagenomics/peptide_database/2026_07/)
+- [`mgy_assemblies.tsv.gz`](https://ftp.ebi.ac.uk/pub/databases/metagenomics/peptide_database/2026_07/)
 
 
 ## Preparation
