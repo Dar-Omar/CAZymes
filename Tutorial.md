@@ -242,6 +242,25 @@ Headers like `>CAC83725.1|GT2|2.4.1.16` are kept; complete and partial EC number
 
 Expected: 26,776 entries (16,166 unique sequences).
 
-  
+
+Count how many characterised CAZymes support each substrate group, as a measure of how well studied each group is.
+
+```bash
+./characterized_per_group.sh
+```
+
+It uses `$HOME/dbcan_db/fam-substrate-mapping.tsv` for dbCAN family, EC, substrate mapping.
+
+- Output: `dbcan_1071/characterized_per_group.tsv` with columns:
+  - `Group`: substrate group
+  - `CAZymes`: predicted CAZymes in the group
+  - `Characterized_proteins`: characterised entries linked to the group
+  - `Characterized_sequences`: the same, counting identical sequences once (main measure)
+  - `Distinct_ECs`: distinct EC numbers in the group (breadth of known activities)
+
+Substrates found in the mapping but not among the predicted substrates are assigned in the `EXTRA_GROUPS` block of the script. The script reports how many entries could be linked to a group, and warns about any substrate without a group (can be added it to `EXTRA_GROUPS`).
+
+Expected: 17,553 of 26,776 entries (65.6%) linked to at least one group; no `UNMAPPED` substrates.
 
   
+
