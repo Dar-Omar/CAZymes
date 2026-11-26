@@ -281,3 +281,17 @@ python3 make_protein_erz.py
 
 Expected: 34,615,481 CAZyme–assembly pairs; 48,522 assemblies (94.6%) containing at least one substrate-annotated CAZyme.
 
+
+### Fetch sampling locations from ENA
+
+Retrieve the sample, study, country and geographic coordinates of each assembly from the [ENA Portal API](https://www.ebi.ac.uk/ena/portal/api/), 500 assemblies per request, needs internet access.
+
+```bash
+./fetch_ena_geo.sh
+```
+
+- Output: `dbcan_1071/erz_geo.tsv`, no header; columns: assembly, sample, study, country, location, checklist
+
+The run is resumable: each batch is saved in `dbcan_1071/erz_geo_batches/`, and failed batches are reported. If any fail (the script exits with status 2), rerun the same command and only the failed batches are retried. The batch folder can be deleted once the run is complete.
+
+Expected: 48,478 of 48,522 assemblies returned. 35,551 (73.3%) with a country and 31,861 (65.7%) with coordinates. ENA metadata change over time.
