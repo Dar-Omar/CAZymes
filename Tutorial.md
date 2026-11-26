@@ -252,7 +252,7 @@ Count how many characterised CAZymes support each substrate group, as a measure 
 
 It uses `$HOME/dbcan_db/fam-substrate-mapping.tsv` for dbCAN family, EC, substrate mapping.
 
-- Output: `dbcan_1071/characterized_per_group.tsv` with columns:
+- Output: `characterized_per_group.tsv` with columns:
   - `Group`: substrate group
   - `CAZymes`: predicted CAZymes in the group
   - `Characterized_proteins`: characterised entries linked to the group
@@ -263,5 +263,21 @@ Substrates found in the mapping but not among the predicted substrates are assig
 
 Expected: 17,553 of 26,776 entries (65.6%) linked to at least one group; no `UNMAPPED` substrates.
 
-  
+
+### Map CAZymes to assemblies
+
+Link each substrate-annotated CAZyme to the MGnify assemblies (ERZ) it was found in, and count how many assemblies contain each substrate group.
+
+```bash
+python3 make_protein_erz.py
+```
+
+- Outputs (in `dbcan_1071/`):
+  - `protein_erz.tsv`: one row per CAZyme × assembly
+  - `erz_list.txt`: distinct assemblies, one per line
+  - `assemblies_per_group.tsv`: per group, the CAZymes, the number of distinct assemblies containing the group, and their percentage of all MGnify assemblies. The last row, `All groups`, counts assemblies with any substrate-annotated CAZyme.
+
+ Percentages use the 51,274 assemblies of release 2026_07 (from the release's `STATS.md`).
+
+Expected: 34,615,481 CAZyme–assembly pairs; 48,522 assemblies (94.6%) containing at least one substrate-annotated CAZyme.
 
