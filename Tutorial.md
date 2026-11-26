@@ -282,7 +282,7 @@ python3 make_protein_erz.py
 Expected: 34,615,481 CAZyme–assembly pairs; 48,522 assemblies (94.6%) containing at least one substrate-annotated CAZyme.
 
 
-### Fetch sampling locations from ENA
+### Fetch sampling locations
 
 Retrieve the sample, study, country and geographic coordinates of each assembly from the [ENA Portal API](https://www.ebi.ac.uk/ena/portal/api/), 500 assemblies per request, needs internet access.
 
