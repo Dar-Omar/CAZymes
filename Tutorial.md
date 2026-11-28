@@ -312,3 +312,21 @@ python3 fetch_erz_biome.py
 Resumable: dropped connections are retried automatically and a rerun skips finished row groups.
 
 Expected: 51,274 assemblies, each with a single biome.
+
+
+Then join each CAZyme with the ENA geography of the assemblies it occurs in.
+
+```bash
+python3 add_geography.py
+```
+
+- Outputs (in `dbcan_1071/`):
+  - `protein_geo_long.tsv`: one row per CAZyme × assembly with that assembly's sample, study, country, location and checklist (input for the map steps)
+  - `overview_2_substrates_group_biomes_category_geo.tsv`: the CAZyme table with these columns appended:
+    - `assemblies`, `sample_accession`, `study_accession`, `checklist`: distinct values, `;`-separated
+    - `country`, `location`: each value with its number of assemblies, most frequent first, e.g. `USA: Dallas, Texas (2); Cameroon (1)`
+    - `n_assemblies`, `n_with_country`, `n_with_location`
+  - `erz_missing.txt`: assemblies not returned by ENA
+
+
+Expected: 7,405,393 of 9,762,736 CAZymes (75.9%) with at least one assembly with coordinates; 44 assemblies not returned by ENA.
