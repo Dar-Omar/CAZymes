@@ -330,3 +330,14 @@ python3 add_geography.py
 
 
 Expected: 7,405,393 of 9,762,736 CAZymes (75.9%) with at least one assembly with coordinates; 44 assemblies not returned by ENA.
+
+
+Then add each assembly's biome and category to the long CAZyme–assembly table, so every row has one CAZyme, one assembly, one location, one biome and one category.
+
+```bash
+python3 add_assembly_biome.py
+```
+
+- Output: `dbcan_1071/protein_geo_biome_long.tsv`, the long table with `biome` and `category` columns added (input for the maps)
+
+Expected: all 34,615,481 rows with a biome and no `UNMAPPED` categories; 24,563,782 rows (71.0%) with a biome and coordinates, covering 7,405,393 mappable CAZymes.
