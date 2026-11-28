@@ -295,3 +295,20 @@ Retrieve the sample, study, country and geographic coordinates of each assembly 
 The run is resumable: each batch is saved in `dbcan_1071/erz_geo_batches/`, and failed batches are reported. If any fail (the script exits with status 2), rerun the same command and only the failed batches are retried. The batch folder can be deleted once the run is complete.
 
 Expected: 48,478 of 48,522 assemblies returned. 35,551 (73.3%) with a country and 31,861 (65.7%) with coordinates. ENA metadata change over time.
+
+
+
+Then read the assembly accession and biome columns of `mgy_proteins_metadata.parquet` (MGnify Proteins 2026_07) directly from EBI without downloading the file since its ~500 GB.
+
+Run inside a screen, needs internet access.
+
+```bash
+python3 ./fetch_erz_biome.py
+```
+
+- Output: `erz_biome_mgnify.tsv`, columns `assembly_accession`, `biome`, `n_occurrences`, covering all assemblies of the release
+- Temporary: `erz_biome_parts/`, can be deleted after the run
+
+Resumable: dropped connections are retried automatically and a rerun skips finished row groups.
+
+Expected: 51,274 assemblies, each with a single biome.
