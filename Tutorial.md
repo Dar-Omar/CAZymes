@@ -303,7 +303,7 @@ Then read the assembly accession and biome columns of `mgy_proteins_metadata.par
 Run inside a screen, needs internet access.
 
 ```bash
-python3 ./fetch_erz_biome.py
+python3 fetch_erz_biome.py
 ```
 
 - Output: `erz_biome_mgnify.tsv`, columns `assembly_accession`, `biome`, `n_occurrences`, covering all assemblies of the release
